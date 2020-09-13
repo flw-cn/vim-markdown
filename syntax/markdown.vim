@@ -116,6 +116,9 @@ syn match  mkdRule         /^\s*\*\s\{0,1}\*\s\{0,1}\*\(\*\|\s\)*$/
 syn match  mkdRule         /^\s*-\s\{0,1}-\s\{0,1}-\(-\|\s\)*$/
 syn match  mkdRule         /^\s*_\s\{0,1}_\s\{0,1}_\(_\|\s\)*$/
 
+syntax region mkdEscape matchgroup=mkdEscape start=/\\\ze[\\\x60*{}\[\]()#+\-.!_>~|"$%&'\/:;<=?@^]/ end=/.\zs/ keepend contains=mkdEscapeCh contained oneline concealends
+syntax match mkdEscapeCh /./ contained
+
 " YAML frontmatter
 if get(g:, 'vim_markdown_frontmatter', 0)
   syn include @yamlTop syntax/yaml.vim
@@ -155,7 +158,7 @@ if get(g:, 'vim_markdown_strikethrough', 0)
     HtmlHiLink mkdStrike        htmlStrike
 endif
 
-syn cluster mkdNonListItem contains=@htmlTop,htmlItalic,htmlBold,htmlBoldItalic,mkdFootnotes,mkdInlineURL,mkdLink,mkdLinkDef,mkdLineBreak,mkdBlockquote,mkdCode,mkdRule,htmlH1,htmlH2,htmlH3,htmlH4,htmlH5,htmlH6,mkdMath,mkdStrike
+syn cluster mkdNonListItem contains=@htmlTop,htmlItalic,htmlBold,htmlBoldItalic,mkdFootnotes,mkdInlineURL,mkdLink,mkdLinkDef,mkdLineBreak,mkdBlockquote,mkdCode,mkdRule,htmlH1,htmlH2,htmlH3,htmlH4,htmlH5,htmlH6,mkdMath,mkdStrike,mkdEscape
 
 "highlighting for Markdown groups
 HtmlHiLink mkdString        String
@@ -177,6 +180,7 @@ HtmlHiLink mkdLinkDef       mkdID
 HtmlHiLink mkdLinkDefTarget mkdURL
 HtmlHiLink mkdLinkTitle     htmlString
 HtmlHiLink mkdDelimiter     Delimiter
+HtmlHiLink mkdEscape        Special
 
 let b:current_syntax = "mkd"
 
